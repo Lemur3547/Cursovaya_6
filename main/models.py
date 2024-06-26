@@ -11,7 +11,7 @@ class Client(models.Model):
     comment = models.TextField(verbose_name='Комментарий', **NULLABLE)
 
     def __str__(self):
-        return f'{self.name} {self.surname}'
+        return f'{self.surname} {self.name}'
 
     class Meta:
         verbose_name = 'Клиент'
@@ -34,7 +34,9 @@ class Mailing(models.Model):
     name = models.CharField(max_length=100, verbose_name='Имя', **NULLABLE)
     first_mall = models.DateTimeField(verbose_name='Дата и время первой отправки рассылки')
     regularity = models.DurationField(verbose_name='Периодичность')
-    status = models.CharField(max_length=10, verbose_name='Статус рассылки')
+    status = models.CharField(max_length=10,
+                              choices={'created': 'Создана', 'active': 'Активна', 'completed': 'Завершена'},
+                              verbose_name='Статус рассылки')
     clients = models.ManyToManyField(to=Client, verbose_name='Список клиентов')
     message = models.ForeignKey(to=Message, on_delete=models.CASCADE, null=True)
 

@@ -12,9 +12,8 @@
 
     <title>Hello, world!</title>
 </head>
-<body>
-
-<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; height: 100vh">
+<body style="display: flex; margin: 0; padding: 0">
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; height: 100vh; position: fixed">
     <a href="{% url 'main:index' %}"
        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="32" fill="currentColor" class="bi bi-envelope"
@@ -26,7 +25,7 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <a href="#" class="nav-link active" aria-current="page">
+            <a href="{% url 'main:index' %}" class="nav-link text-white" aria-current="page">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                      class="bi me-2" viewBox="0 0 16 16">
                     <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
@@ -35,7 +34,7 @@
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link text-white">
+            <a href="{% url 'main:clients' %}" class="nav-link text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                      class="bi me-2" viewBox="0 0 16 16">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
@@ -66,7 +65,7 @@
         </li>
     </ul>
 </div>
-<div class="container">
+<div class="container" style="margin-left: 380px; margin-right: 100px; max-width: 1420px">
     {% block content %}
     {% endblock %}
 </div>
