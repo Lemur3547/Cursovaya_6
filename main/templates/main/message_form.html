@@ -1,0 +1,44 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<div class="row mt-5 ms-0 me-0">
+    <div class="col-6">
+        <h1>
+            {% if object %}
+            Изменить письмо
+            {% else %}
+            Добавить Письмо
+            {% endif %}
+        </h1>
+    </div>
+</div>
+<div class="row mt-5 ms-0 me-0">
+    <div class="card col-6">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {% if object %}
+                <input name="name" type="text" class="form-control mb-3" value="{{ form.name.value }}"
+                       placeholder="Темя письма" required>
+                {% else %}
+                <input name="name" type="text" class="form-control mb-3" placeholder="Темя письма" required>
+                {% endif %}
+
+                {% if object %}
+                <textarea name="text" class="form-control mb-3"
+                          placeholder="Письмо" required>{{ form.text.value }}</textarea>
+                {% else %}
+                <textarea name="text" class="form-control mb-3" placeholder="Письмо" required></textarea>
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary">
+                    {% if object %}
+                    Сохранить
+                    {% else %}
+                    Создать
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
