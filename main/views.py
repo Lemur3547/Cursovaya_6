@@ -29,7 +29,6 @@ class ClientsDeleteView(DeleteView):
     success_url = reverse_lazy('main:clients')
 
 
-# Create your views here.
 class MessageListView(ListView):
     model = Message
 
@@ -54,3 +53,27 @@ class MessageDeleteView(DeleteView):
     model = Message
     success_url = reverse_lazy('main:messages')
 
+
+class MailingListView(ListView):
+    model = Mailing
+
+
+class MailingCreateView(CreateView):
+    model = Mailing
+    fields = ('name', 'first_mall', 'regularity', 'status', 'clients', 'message')
+    success_url = reverse_lazy('main:index')
+
+
+class MailingUpdateView(UpdateView):
+    model = Mailing
+    fields = ('name', 'first_mall', 'regularity', 'status', 'clients', 'message')
+    success_url = reverse_lazy('main:index')
+
+
+class MailingDetailView(DetailView):
+    model = Mailing
+
+
+class MailingDeleteView(DeleteView):
+    model = Mailing
+    success_url = reverse_lazy('main:index')
