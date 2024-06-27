@@ -33,7 +33,9 @@ class Message(models.Model):
 class Mailing(models.Model):
     name = models.CharField(max_length=100, verbose_name='Имя', **NULLABLE)
     first_mall = models.DateTimeField(verbose_name='Дата и время первой отправки рассылки')
-    regularity = models.DurationField(verbose_name='Периодичность')
+    regularity = models.CharField(max_length=5,
+                                  choices={'day': 'Каждый день', 'week': 'Раз в неделю', 'month': 'Раз в месяц'},
+                                  verbose_name='Периодичность')
     status = models.CharField(max_length=10,
                               choices={'created': 'Создана', 'active': 'Активна', 'completed': 'Завершена'},
                               verbose_name='Статус рассылки')
