@@ -47,7 +47,10 @@
                 </div>
                 <div class="col">
                     {% for client in mailing.clients.all %}
-                    <p class="mb-0">{{ client }}</p>
+                    <div class="row">
+                        <p class="mb-0 col-4">{{ client }}</p>
+                        <p class="mb-0 col">{{ client.email }}</p>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
