@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 
-from main.models import Mailing, Client, Message
+from main.models import Mailing, Client, Message, MailingLog
 
 
 class ClientListView(ListView):
@@ -77,3 +77,8 @@ class MailingDetailView(DetailView):
 class MailingDeleteView(DeleteView):
     model = Mailing
     success_url = reverse_lazy('main:index')
+
+
+class MailingLogListView(ListView):
+    model = MailingLog
+    ordering = '-last_mall'
