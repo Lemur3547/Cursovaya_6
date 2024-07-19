@@ -73,9 +73,13 @@
                             <div class="card bg-success text-center p-2" style="color: white">
                                 Активна
                             </div>
-                            {% else %}
+                            {% elif mail.status == 'completed' %}
                             <div class="card bg-danger text-center p-2" style="color: white">
                                 Завершена
+                            </div>
+                            {% else %}
+                            <div class="card bg-warning text-center p-2" style="color: white">
+                                Ошибка статуса
                             </div>
                             {% endif %}
                         </div>
