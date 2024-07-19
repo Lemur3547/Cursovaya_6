@@ -33,6 +33,8 @@ class Message(models.Model):
 class Mailing(models.Model):
     name = models.CharField(max_length=100, verbose_name='Имя', **NULLABLE)
     first_mall = models.DateTimeField(verbose_name='Дата и время первой отправки рассылки')
+    last_mall = models.DateTimeField(verbose_name='Дата и время последней отправки рассылки', **NULLABLE)
+    next_mail = models.DateTimeField(verbose_name='Дата и время следующей отправки рассылки', **NULLABLE)
     regularity = models.CharField(max_length=5,
                                   choices={'day': 'Каждый день', 'week': 'Раз в неделю', 'month': 'Раз в месяц'},
                                   verbose_name='Периодичность')
@@ -54,7 +56,7 @@ class Mailing(models.Model):
 
 
 class MailingLog(models.Model):
-    last_mall = models.DateTimeField(verbose_name='Дата и время последней попытки')
+    mailing_time = models.DateTimeField(verbose_name='Дата и время попытки')
     status = models.BooleanField(verbose_name='статус попытки')
     response = models.CharField(max_length=255, verbose_name='Ответ почтового сервера', **NULLABLE)
     mailing = models.ForeignKey(to=Mailing, on_delete=models.CASCADE)

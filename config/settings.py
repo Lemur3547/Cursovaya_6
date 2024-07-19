@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
 
     'main',
 ]
@@ -79,6 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'Cursovaya_6',
+        'HOST': 'localhost',
         'USER': 'postgres',
         'PASSWORD': 'Emik2507'
     }
@@ -109,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Yekaterinburg'
 
 USE_I18N = True
 
@@ -133,5 +135,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 EMAIL_HOST = 'smtp.yandex.com'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'django.emailtest@yandex.ru'
-EMAIL_HOST_PASSWORD = 'idnnysgqymxqefsv'
+EMAIL_HOST_PASSWORD = 'bfatwmjntwrdnpdr'
 EMAIL_USE_SSL = True
+
+CRONJOBS = [
+    ('*/1 * * * *', 'main.send_email.time_check')
+]

@@ -28,6 +28,6 @@ class MailingAdmin(admin.ModelAdmin):
 
 @admin.register(MailingLog)
 class MailingLogAdmin(admin.ModelAdmin):
-    list_display = ('id', 'mailing', 'last_mall', 'status', 'response')
-    list_filter = ('mailing', 'last_mall', 'status', 'response')
+    list_display = ('id', 'mailing', 'mailing_time', 'status', 'response')
+    list_filter = ('mailing', 'mailing_time', 'status', 'response')
     search_fields = ('mailing', 'status', 'response')

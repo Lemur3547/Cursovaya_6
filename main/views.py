@@ -81,4 +81,4 @@ class MailingDeleteView(DeleteView):
 
 class MailingLogListView(ListView):
     model = MailingLog
-    ordering = '-last_mall'
+    ordering = '-mailing_time'
