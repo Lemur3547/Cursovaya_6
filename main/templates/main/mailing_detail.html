@@ -3,8 +3,8 @@
 <div class="row mt-5 ms-0 me-0 align-items-center">
     <div class="col-5">
         <h1>
-            {% if mail.name %}
-            {{ mail.name }}
+            {% if object.name %}
+            {{ object.name }}
             {% else %}
             Рассылка №{{ object.pk }}
             {% endif %}
@@ -68,6 +68,26 @@
                         </p>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                {% if object.status == 'active' %}
+                <div class="col-4">
+                    <a href="{% url 'main:mailing_set_status' object.pk %}" type="button" class="btn btn-danger w-100">
+                        Завершить рассылку
+                    </a>
+                </div>
+                {% elif object.status == 'completed' %}
+                <div class="col-4">
+                    <a href="{% url 'main:mailing_set_status' object.pk %}" type="button" class="btn btn-success w-100">
+                        Возобновить рассылку
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a href="{% url 'main:delete_mailing' object.pk %}" type="button" class="btn btn-danger w-100">
+                        Удалить рассылку
+                    </a>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -1,4 +1,6 @@
-from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 
 from main.models import Mailing, Client, Message, MailingLog
@@ -60,18 +62,36 @@ class MailingListView(ListView):
 
 class MailingCreateView(CreateView):
     model = Mailing
-    fields = ('name', 'first_mall', 'regularity', 'status', 'clients', 'message')
+    fields = ('name', 'first_mall', 'regularity', 'clients', 'message')
     success_url = reverse_lazy('main:index')
+
+    def form_valid(self, form):
+        mailing = form.save()
+        if form.is_valid():
+            mailing.status = 'created'
+            mailing.save()
+        return super().form_valid(form)
 
 
 class MailingUpdateView(UpdateView):
     model = Mailing
-    fields = ('name', 'first_mall', 'regularity', 'status', 'clients', 'message')
+    fields = ('name', 'first_mall', 'regularity', 'clients', 'message')
     success_url = reverse_lazy('main:index')
 
 
 class MailingDetailView(DetailView):
     model = Mailing
+
+
+@login_required
+def mailing_set_status(request, pk):
+    mailing = get_object_or_404(Mailing, pk=pk)
+    if mailing.status == 'active':
+        mailing.status = 'completed'
+    else:
+        mailing.status = 'active'
+    mailing.save()
+    return redirect(reverse('main:view_mailing', kwargs={'pk': pk}))
 
 
 class MailingDeleteView(DeleteView):
