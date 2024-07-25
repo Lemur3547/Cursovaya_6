@@ -1,4 +1,5 @@
 {% load static %}
+{% load my_tags %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -63,6 +64,27 @@
             </a>
         </li>
     </ul>
+    <hr>
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            {% if user.avatar %}
+                <img src="{{ user.avatar|media_filter }}" class="rounded-circle me-3"
+                     style="height: 40px; width: 40px; object-fit: cover">
+                {% else %}
+                <img src="/media/no_profile.png" class="rounded-circle me-3"
+                     style="height: 40px; width: 40px; object-fit: cover">
+                {% endif %}
+            {{ user }}
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" href="#">Профиль</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Выйти</a></li>
+        </ul>
+    </div>
 </div>
 <div class="container" style="margin-left: 380px; margin-right: 100px; max-width: 1420px">
     {% block content %}

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_crontab',
 
     'main',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +142,5 @@ EMAIL_USE_SSL = True
 CRONJOBS = [
     ('*/1 * * * *', 'main.send_email.time_check')
 ]
+
+AUTH_USER_MODEL = 'users.USER'
