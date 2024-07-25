@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 NULLABLE = {'null': True, 'blank': True}
 
 
@@ -9,6 +11,7 @@ class Client(models.Model):
     surname = models.CharField(max_length=50, verbose_name='Фамилия')
     patronymic = models.CharField(max_length=50, verbose_name='Отчество', **NULLABLE)
     comment = models.TextField(verbose_name='Комментарий', **NULLABLE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE)
 
     def __str__(self):
         return f'{self.surname} {self.name}'
@@ -21,6 +24,7 @@ class Client(models.Model):
 class Message(models.Model):
     name = models.CharField(max_length=255, verbose_name='Темя письма')
     text = models.TextField(verbose_name='Письмо')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE)
 
     def __str__(self):
         return self.name
@@ -42,7 +46,8 @@ class Mailing(models.Model):
                               choices={'created': 'Создана', 'active': 'Активна', 'completed': 'Завершена'},
                               verbose_name='Статус рассылки')
     clients = models.ManyToManyField(to=Client, verbose_name='Список клиентов')
-    message = models.ForeignKey(to=Message, on_delete=models.CASCADE, null=True)
+    message = models.ForeignKey(to=Message, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE)
 
     def __str__(self):
         if self.name:
@@ -60,6 +65,7 @@ class MailingLog(models.Model):
     status = models.BooleanField(verbose_name='статус попытки')
     response = models.CharField(max_length=255, verbose_name='Ответ почтового сервера', **NULLABLE)
     mailing = models.ForeignKey(to=Mailing, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'Отчет к рассылке {self.mailing}'
