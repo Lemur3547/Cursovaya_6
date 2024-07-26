@@ -1,9 +1,14 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView, TemplateView
 
 from main.models import Mailing, Client, Message, MailingLog
+
+
+class MainPage(TemplateView):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'main/index.html')
 
 
 class ClientListView(ListView):
@@ -63,7 +68,7 @@ class MailingListView(ListView):
 class MailingCreateView(CreateView):
     model = Mailing
     fields = ('name', 'first_mall', 'regularity', 'clients', 'message')
-    success_url = reverse_lazy('main:index')
+    success_url = reverse_lazy('main:mailings')
 
     def form_valid(self, form):
         mailing = form.save()
@@ -76,7 +81,7 @@ class MailingCreateView(CreateView):
 class MailingUpdateView(UpdateView):
     model = Mailing
     fields = ('name', 'first_mall', 'regularity', 'clients', 'message')
-    success_url = reverse_lazy('main:index')
+    success_url = reverse_lazy('main:mailings')
 
 
 class MailingDetailView(DetailView):
@@ -96,7 +101,7 @@ def mailing_set_status(request, pk):
 
 class MailingDeleteView(DeleteView):
     model = Mailing
-    success_url = reverse_lazy('main:index')
+    success_url = reverse_lazy('main:mailings')
 
 
 class MailingLogListView(ListView):
