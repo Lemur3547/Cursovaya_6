@@ -40,10 +40,10 @@ class Mailing(models.Model):
     last_mall = models.DateTimeField(verbose_name='Дата и время последней отправки рассылки', **NULLABLE)
     next_mail = models.DateTimeField(verbose_name='Дата и время следующей отправки рассылки', **NULLABLE)
     regularity = models.CharField(max_length=5,
-                                  choices={'day': 'Каждый день', 'week': 'Раз в неделю', 'month': 'Раз в месяц'},
+                                  choices=[('day', 'Каждый день'), ('week', 'Раз в неделю'), ('month', 'Раз в месяц')],
                                   verbose_name='Периодичность')
     status = models.CharField(max_length=10,
-                              choices={'created': 'Создана', 'active': 'Активна', 'completed': 'Завершена'},
+                              choices=[('created', 'Создана'), ('active', 'Активна'), ('completed', 'Завершена')],
                               verbose_name='Статус рассылки')
     clients = models.ManyToManyField(to=Client, verbose_name='Список клиентов')
     message = models.ForeignKey(to=Message, on_delete=models.CASCADE)
