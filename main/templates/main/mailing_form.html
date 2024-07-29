@@ -20,41 +20,6 @@
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-
-<!--                {% if object %}-->
-<!--                {% if object.name %}-->
-<!--                <input name="name" type="text" class="form-control mb-3" value="{{ form.name.value }}"-->
-<!--                       placeholder="Название">-->
-<!--                {% else %}-->
-<!--                <input name="name" type="text" class="form-control mb-3" placeholder="Название">-->
-<!--                {% endif %}-->
-<!--                {% else %}-->
-<!--                <input name="name" type="text" class="form-control mb-3" placeholder="Название">-->
-<!--                {% endif %}-->
-
-<!--                <p>Дата и время первой рассылки:</p>-->
-<!--                {% if object %}-->
-<!--                <input name="first_mall" type="datetime-local" class="form-control mb-3"-->
-<!--                       value="{{ form.first_mall.value }}" required>-->
-<!--                {% else %}-->
-<!--                <input name="first_mall" type="datetime-local" class="form-control mb-3" required>-->
-<!--                {% endif %}-->
-
-<!--                <p>Период рассылки:</p>-->
-<!--                {% if object %}-->
-<!--                <select name="category" class="form-select">-->
-<!--                    {% for regularity in form.regularity %}-->
-<!--                    <option>{{ regularity }}</option>-->
-<!--                    {% endfor %}-->
-<!--                </select>-->
-<!--                {% else %}-->
-<!--                <select name="category" class="form-select">-->
-<!--                    {% for regularity in form.regularity %}-->
-<!--                    {{ regularity }}-->
-<!--                    {% endfor %}-->
-<!--                </select>-->
-<!--                {% endif %}-->
-
                 <button type="submit" class="btn btn-primary">
                     {% if object %}
                     Сохранить

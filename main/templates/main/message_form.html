@@ -16,20 +16,7 @@
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
-                {% if object %}
-                <input name="name" type="text" class="form-control mb-3" value="{{ form.name.value }}"
-                       placeholder="Темя письма" required>
-                {% else %}
-                <input name="name" type="text" class="form-control mb-3" placeholder="Темя письма" required>
-                {% endif %}
-
-                {% if object %}
-                <textarea name="text" class="form-control mb-3"
-                          placeholder="Письмо" required>{{ form.text.value }}</textarea>
-                {% else %}
-                <textarea name="text" class="form-control mb-3" placeholder="Письмо" required></textarea>
-                {% endif %}
-
+                {{ form.as_p }}
                 <button type="submit" class="btn btn-primary">
                     {% if object %}
                     Сохранить

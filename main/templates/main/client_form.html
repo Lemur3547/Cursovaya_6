@@ -16,45 +16,7 @@
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
-                {% if object %}
-                <input name="name" type="text" class="form-control mb-3" value="{{ form.name.value }}"
-                       placeholder="Имя" required>
-                {% else %}
-                <input name="name" type="text" class="form-control mb-3" placeholder="Имя" required>
-                {% endif %}
-
-                {% if object %}
-                <input name="surname" type="text" class="form-control mb-3" value="{{ form.surname.value }}"
-                       placeholder="Фамилия" required>
-                {% else %}
-                <input name="surname" type="text" class="form-control mb-3" placeholder="Фамилия" required>
-                {% endif %}
-
-                {% if object %}
-                {% if object.patronymic %}
-                <input name="patronymic" type="text" class="form-control mb-3" value="{{ form.patronymic.value }}"
-                       placeholder="Отчество">
-                {% else %}
-                <input name="patronymic" type="text" class="form-control mb-3" placeholder="Отчество">
-                {% endif %}
-                {% else %}
-                <input name="patronymic" type="text" class="form-control mb-3" placeholder="Отчество">
-                {% endif %}
-
-                {% if object %}
-                <input name="email" type="email" class="form-control mb-3" value="{{ form.email.value }}"
-                       placeholder="Email" required>
-                {% else %}
-                <input name="email" type="email" class="form-control mb-3" placeholder="Email" required>
-                {% endif %}
-
-                {% if object %}
-                <textarea name="comment" class="form-control mb-3"
-                          placeholder="Комментарий">{{ form.comment.value }}</textarea>
-                {% else %}
-                <textarea name="comment" class="form-control mb-3" placeholder="Комментарий"></textarea>
-                {% endif %}
-
+                {{ form.as_p }}
                 <button type="submit" class="btn btn-primary">
                     {% if object %}
                     Сохранить
