@@ -23,10 +23,12 @@ def update_mailing_status(mailing, current_datetime_round):
             recipient_list=[client.email for client in mailing.clients.all()],
             fail_silently=False
         )
-        MailingLog.objects.create(mailing_time=current_datetime_round, status=True, response=None, mailing=mailing)
+        MailingLog.objects.create(mailing_time=current_datetime_round, status=True, response=None, mailing=mailing,
+                                  user=mailing.user)
         write_to_log('отправлено успешно')
     except smtplib.SMTPException as e:
-        MailingLog.objects.create(mailing_time=current_datetime_round, status=False, response=e, mailing=mailing)
+        MailingLog.objects.create(mailing_time=current_datetime_round, status=False, response=e, mailing=mailing,
+                                  user=mailing.user)
         write_to_log('возникла ошибка')
 
     mailing.last_mall = current_datetime_round
