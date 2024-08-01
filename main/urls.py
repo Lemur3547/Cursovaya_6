@@ -3,7 +3,9 @@ from django.urls import path
 from main.views import ClientListView, ClientCreateView, ClientUpdateView, ClientsDetailView, ClientsDeleteView, \
     MessageListView, MessageCreateView, MessageUpdateView, MessageDetailView, MessageDeleteView, \
     MailingListView, MailingCreateView, MailingUpdateView, MailingDetailView, MailingDeleteView, MailingLogListView, \
-    mailing_set_status, MainPage
+    mailing_set_status, MainPage, ManagerMailingListView, UserListView, ManagerMailingDetailView, disable_mailing, \
+    UserDetailView
+from users.views import block_user
 
 urlpatterns = [
     path('', MainPage.as_view(), name='index'),
@@ -27,5 +29,12 @@ urlpatterns = [
     path('delete_mailing/<int:pk>', MailingDeleteView.as_view(), name='delete_mailing'),
 
     path('mailing_logs/', MailingLogListView.as_view(), name='mailing_logs'),
-    path('set_status/<int:pk>', mailing_set_status, name='mailing_set_status')
+    path('set_status/<int:pk>', mailing_set_status, name='mailing_set_status'),
+    path('disable_mailing/<int:pk>', disable_mailing, name='disable_mailing'),
+    path('block_user/<int:pk>', block_user, name='block_user'),
+
+    path('manager/mailings/', ManagerMailingListView.as_view(), name='manager_mailings'),
+    path('manager/view_mailing/<int:pk>', ManagerMailingDetailView.as_view(), name='manager_view_mailing'),
+    path('manager/users/', UserListView.as_view(), name='manager_users'),
+    path('manager/user/<int:pk>', UserDetailView.as_view(), name='manager_view_user'),
 ]

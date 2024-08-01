@@ -1,0 +1,95 @@
+{% extends 'main/base.html' %}
+{% block menu %}
+{% include 'main/includes/inc_manager_menu.html' %}
+{% endblock %}
+{% block content %}
+{% load my_tags %}
+<div class="row mt-5 ms-0 me-0">
+    <div class="col-6">
+        <h1>
+            Список пользователей
+        </h1>
+    </div>
+</div>
+<div class="row mt-5 ms-0 me-0">
+    <div class="card mb-3">
+        <div class="card-body p-0">
+            <div class="row">
+                <div class="text-decoration-none text-reset p-3">
+                    <div class="row align-items-center">
+                        <div class="col-3">
+                            Имя
+                        </div>
+                        <div class="col-3">
+                            Email
+                        </div>
+                        <div class="col-1 text-center">
+                            Активный
+                        </div>
+                        <div class="col-1">
+                        </div>
+                        <div class="col-2">
+                            Последний вход
+                        </div>
+                        <div class="col-2">
+                            Дата регистрации
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for user in object_list %}
+    <div class="card mb-3">
+        <div class="card-body p-0">
+            <div class="row">
+                <a href="{% url 'main:manager_view_user' user.pk %}" class="text-decoration-none text-reset p-3">
+                    <div class="row align-items-center">
+                        <div class="col-3 d-flex">
+                            {% if user.avatar %}
+                            <img src="{{ user.avatar|media_filter }}" class="rounded-circle me-2"
+                                 style="height: 30px; width: 30px; object-fit: cover">
+                            {% else %}
+                            <img src="/media/no_profile.png" class="rounded-circle me-2"
+                                 style="height: 30px; width: 30px; object-fit: cover">
+                            {% endif %}
+                            <p class="mb-0 fw-bold">
+                                {{ user }}
+                            </p>
+                        </div>
+                        <div class="col-3">
+                            {{ user.email }}
+                        </div>
+                        <div class="col-1 text-center">
+                            {% if user.is_active %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 16 16" style="fill: #198754"
+                                 class="bi bi-check-square-fill">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+                            </svg>
+                            {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 16 16" fill="#dc3545"
+                                 class="bi bi-x-square-fill">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                            </svg>
+                            {% endif %}
+                        </div>
+                        <div class="col-1">
+                        </div>
+                        <div class="col-2">
+                            {% if user.last_login %}
+                            {{ user.last_login }}
+                            {% else %}
+                            Нет
+                            {% endif %}
+                        </div>
+                        <div class="col-2">
+                            {{ user.date_joined }}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

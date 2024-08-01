@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
@@ -7,6 +7,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView, D
 
 from main.forms import MailingForm, ClientForm, MessageForm
 from main.models import Mailing, Client, Message, MailingLog
+from users.models import User
 
 
 class MainPage(TemplateView):
@@ -202,6 +203,17 @@ def mailing_set_status(request, pk):
     return redirect(reverse('main:view_mailing', kwargs={'pk': pk}))
 
 
+@login_required
+def disable_mailing(request, pk):
+    mailing = get_object_or_404(Mailing, pk=pk)
+    if mailing.is_active:
+        mailing.is_active = False
+    else:
+        mailing.is_active = True
+    mailing.save()
+    return redirect(reverse('main:manager_view_mailing', kwargs={'pk': pk}))
+
+
 class MailingDeleteView(LoginRequiredMixin, DeleteView):
     model = Mailing
     success_url = reverse_lazy('main:mailings')
@@ -222,3 +234,31 @@ class MailingLogListView(LoginRequiredMixin, ListView):
         queryset = super().get_queryset(*args, **kwargs)
         queryset = queryset.filter(user=self.request.user)
         return queryset
+
+
+class ManagerMailingListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = Mailing
+    template_name = 'main/manager_mailing_list.html'
+    permission_required = 'main.view_mailing'
+
+
+class ManagerMailingDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    model = Mailing
+    template_name = 'main/manager_mailing_detail.html'
+    permission_required = 'main.view_mailing'
+
+
+class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = User
+    permission_required = 'users.view_user'
+
+
+class UserDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    model = User
+    permission_required = 'users.view_user'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['user'] = self.request.user
+        context_data['viewable_user'] = User.objects.get(pk=self.kwargs['pk'])
+        return context_data

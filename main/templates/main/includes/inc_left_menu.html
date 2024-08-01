@@ -66,6 +66,7 @@
                 </div>
             </a>
         </li>
+        {% if perms.main.can_disable_mailings and perms.users.can_block_users %}
         <li>
             <a href="{% url 'main:manager_mailings' %}" class="nav-link text-white" style="height: 40px">
                 <div class="d-flex lh-1 align-items-center">
@@ -79,6 +80,7 @@
                 </div>
             </a>
         </li>
+        {% endif %}
     </ul>
     <hr>
     <div class="dropdown">
