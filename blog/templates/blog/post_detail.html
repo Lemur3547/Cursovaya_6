@@ -1,0 +1,18 @@
+{% extends 'main/base2.html' %}
+{% block content %}
+{% load my_tags %}
+    <div class="row mt-5">
+        <h1 class="mb-4 ms-3 text-center">{{ object.name }}</h1>
+        {% if object.image %}
+        <div class="col-4">
+            <img src="{{ object.image|media_filter }}" class="rounded float-start w-100">
+        </div>
+        {% endif %}
+        <div class="col">
+            <p class="mb-4 ms-3">{{ object.body }}</p>
+        </div>
+    </div>
+    <div>
+        <p class="mb-4 ms-3 text-end">{{ object.views_count }} просмотров.</p>
+    </div>
+{% endblock %}

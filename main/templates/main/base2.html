@@ -14,13 +14,18 @@
 </head>
 <body style="margin: 0; padding: 0">
 <header class="p-3 text-white bg-dark d-flex">
-    <a href="{% url 'main:index' %}" class="text-white text-decoration-none align-items-center d-flex me-auto">
+    <a href="{% url 'main:index' %}" class="text-white text-decoration-none align-items-center d-flex me-4">
         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="32" fill="currentColor" class="bi bi-envelope"
              viewBox="0 0 16 16">
             <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
         </svg>
         <span class="fs-4">SendEmail</span>
     </a>
+    <div class="me-auto">
+        <ul class="nav justify-content-center">
+          <li><a href="{% url 'blog:index' %}" class="nav-link px-2 text-white">Блог</a></li>
+        </ul>
+    </div>
     <div class="text-end d-flex">
         {% if user.is_authenticated %}
         <div class="dropdown me-3">
@@ -41,6 +46,9 @@
                 </li>
                 <li><a class="dropdown-item" href="#">Профиль</a></li>
                 <li><a class="dropdown-item" href="{% url 'main:mailings' %}">Мои рассылки</a></li>
+                {% if perms.main.can_disable_mailings and perms.users.can_block_users %}
+                <li><a class="dropdown-item" href="{% url 'main:manager_mailings' %}">Панель менеджера</a></li>
+                {% endif %}
                 <li>
                     <hr class="dropdown-divider">
                 </li>
