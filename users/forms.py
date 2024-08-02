@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.forms import BooleanField
 
 from users.models import User
@@ -25,3 +25,13 @@ class UserRegisterForm(StyleFormMixin, UserCreationForm):
 
         self.fields['password1'].help_text = forms.HiddenInput()
         self.fields['password2'].help_text = forms.HiddenInput()
+
+
+class UserProfileForm(StyleFormMixin, UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'avatar',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password'].widget = forms.HiddenInput()
