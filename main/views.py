@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView, TemplateView
 
+from blog.models import Post
 from main.forms import MailingForm, ClientForm, MessageForm
 from main.models import Mailing, Client, Message, MailingLog
 from users.models import User
@@ -12,7 +13,13 @@ from users.models import User
 
 class MainPage(TemplateView):
     def get(self, request, *args, **kwargs):
-        return render(request, 'main/index.html')
+        context = {
+            'mailings_count': Mailing.objects.all().count(),
+            'active_mailings': Mailing.objects.filter(status='active', is_active=True).count(),
+            'clients': Client.objects.all().distinct('email').count(),
+            'blog': Post.objects.all().order_by('-created_at')[:3]
+        }
+        return render(request, 'main/index.html', context)
 
 
 class ClientListView(LoginRequiredMixin, ListView):
