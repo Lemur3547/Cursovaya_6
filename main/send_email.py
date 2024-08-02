@@ -47,13 +47,13 @@ def time_check():
     current_datetime = timezone.now()
     current_datetime_round = current_datetime.replace(second=0, microsecond=0)
     write_to_log(current_datetime)
-    new_mailings = Mailing.objects.filter(first_mall__lte=current_datetime, status='created')
+    new_mailings = Mailing.objects.filter(first_mall__lte=current_datetime, status='created', is_active=True)
     write_to_log(new_mailings)
     for mailing in new_mailings:
         mailing.status = 'active'
         update_mailing_status(mailing, current_datetime_round)
 
-    mailings = Mailing.objects.filter(next_mail__lte=current_datetime, status='active')
+    mailings = Mailing.objects.filter(next_mail__lte=current_datetime, status='active', is_active=True)
     write_to_log(mailings)
     for mailing in mailings:
         update_mailing_status(mailing, current_datetime_round)
