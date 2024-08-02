@@ -1,6 +1,6 @@
+from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import BooleanField
-from django import forms
 
 from users.models import User
 
@@ -19,3 +19,9 @@ class UserRegisterForm(StyleFormMixin, UserCreationForm):
     class Meta:
         model = User
         fields = ('email', 'password1', 'password2')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['password1'].help_text = forms.HiddenInput()
+        self.fields['password2'].help_text = forms.HiddenInput()

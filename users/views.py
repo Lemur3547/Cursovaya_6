@@ -1,12 +1,14 @@
 import secrets
+import string
 
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView
 
 from users.forms import UserRegisterForm
 from users.models import User
@@ -58,3 +60,26 @@ def block_user(request, pk):
         user.is_active = True
     user.save()
     return redirect(reverse('main:manager_view_user', kwargs={'pk': pk}))
+
+
+class ResetPasswordView(TemplateView):
+    def get(self, request):
+        return render(request, 'users/reset_password.html')
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            email = request.POST.get('email')
+            alphabet = string.ascii_letters + string.digits
+            new_password = ''.join(secrets.choice(alphabet) for i in range(20))
+            user = User.objects.get(email=email)
+            user.password = make_password(new_password, salt=None, hasher='default')
+            user.save()
+            send_mail(
+                subject='Изменение пароля',
+                message=f'Новый пароль для вашего аккаунта: {new_password}\n'
+                        f'Никому не сообщайте ваши данные для входа в систему.\n\n'
+                        f'Если вы не запрашивали новый пароль, игнорируйте данное сообщение.',
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[email]
+            )
+        return redirect(reverse('users:login'))
