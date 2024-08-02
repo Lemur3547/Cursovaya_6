@@ -1,17 +1,22 @@
-from django.core.management import BaseCommand
+import os
 
+from django.core.management import BaseCommand
+from dotenv import load_dotenv
+
+from config.settings import BASE_DIR
 from users.models import User
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
+        load_dotenv(BASE_DIR / '.env', override=True)
         user = User.objects.create(
-            username='Админ Великий',
-            email='emikgal2507@gmail.com',
+            username=os.getenv('username'),
+            email=os.getenv('email'),
             is_staff=True,
             is_superuser=True,
         )
 
-        user.set_password('Emik2507')
+        user.set_password(os.getenv('user_password'))
         user.save()
