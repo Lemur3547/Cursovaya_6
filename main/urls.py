@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.cache import cache_page
 
 from main.views import ClientListView, ClientCreateView, ClientUpdateView, ClientsDetailView, ClientsDeleteView, \
     MessageListView, MessageCreateView, MessageUpdateView, MessageDetailView, MessageDeleteView, \
@@ -8,7 +9,7 @@ from main.views import ClientListView, ClientCreateView, ClientUpdateView, Clien
 from users.views import block_user
 
 urlpatterns = [
-    path('', MainPage.as_view(), name='index'),
+    path('', cache_page(60)(MainPage.as_view()), name='index'),
 
     path('clients/', ClientListView.as_view(), name='clients'),
     path('add_client/', ClientCreateView.as_view(), name='add_client'),
