@@ -1,0 +1,34 @@
+{% extends 'main/base.html' %}
+{% block menu %}
+{% include 'main/includes/inc_left_menu.html' %}
+{% endblock %}
+{% block content %}
+<div class="row mt-5 ms-0 me-0">
+    <div class="col-6">
+        <h1>
+            {% if object %}
+            Изменить письмо
+            {% else %}
+            Добавить Письмо
+            {% endif %}
+        </h1>
+    </div>
+</div>
+<div class="row mt-5 ms-0 me-0">
+    <div class="card col-6">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">
+                    {% if object %}
+                    Сохранить
+                    {% else %}
+                    Создать
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

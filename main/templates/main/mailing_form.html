@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+{% block menu %}
+{% include 'main/includes/inc_left_menu.html' %}
+{% endblock %}
+{% block content %}
+<div class="row mt-5">
+    <h1>
+        {% if object %}
+        Настроить рассылку
+        {% if object.name %}
+        {{ object }}
+        {% else %}
+        №{{object.pk}}
+        {% endif %}
+        {% else %}
+        Создать рассылку
+        {% endif %}
+    </h1>
+</div>
+<div class="row mt-5">
+    <div class="card col-6">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">
+                    {% if object %}
+                    Сохранить
+                    {% else %}
+                    Создать
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

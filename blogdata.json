@@ -1,0 +1,57 @@
+[
+  {
+    "model": "blog.post",
+    "pk": 1,
+    "fields": {
+      "name": "Запуск нашего сайта",
+      "body": "Ура",
+      "image": "blog/landscape-lake-nature-reflection-park-national-park-fjord-wilderness-Alps.jpg",
+      "views_count": 21,
+      "created_at": "2024-08-01T11:51:28.796Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 2,
+    "fields": {
+      "name": "Обновление 0.2",
+      "body": "Добавлены новые функции",
+      "image": "",
+      "views_count": 8,
+      "created_at": "2024-08-01T15:57:48.791Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 3,
+    "fields": {
+      "name": "Наш телеграмм канал",
+      "body": "Подпишитесь",
+      "image": "blog/maxresdefault.jpg",
+      "views_count": 10,
+      "created_at": "2024-08-01T15:59:15.752Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 4,
+    "fields": {
+      "name": "Как правильно оформить рассылку?",
+      "body": "Расскажем здесь",
+      "image": "",
+      "views_count": 3,
+      "created_at": "2024-08-01T15:59:53.937Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 5,
+    "fields": {
+      "name": "Новый функционал сайта",
+      "body": "Теперь можно делать...[читать далее]",
+      "image": "",
+      "views_count": 1,
+      "created_at": "2024-08-01T16:03:42.752Z"
+    }
+  }
+]

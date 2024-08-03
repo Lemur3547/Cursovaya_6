@@ -1,0 +1,24 @@
+{% load static %}
+{% load my_tags %}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <title>Hello, world!</title>
+</head>
+<body style="display: flex; margin: 0; padding: 0">
+{% block menu %}
+{% endblock %}
+<div class="container" style="margin-left: 380px; margin-right: 100px; max-width: 1420px">
+    {% block content %}
+    {% endblock %}
+</div>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

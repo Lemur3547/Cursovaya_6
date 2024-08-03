@@ -1,0 +1,86 @@
+{% extends 'main/base.html' %}
+{% block menu %}
+{% include 'main/includes/inc_manager_menu.html' %}
+{% endblock %}
+{% block content %}
+{% load my_tags %}
+<div class="row mt-5 ms-0 me-0 align-items-center">
+    <div class="col-5">
+        <h1>
+            {% if object.name %}
+            {{ object.name }}
+            {% else %}
+            Рассылка №{{ object.pk }}
+            {% endif %}
+        </h1>
+    </div>
+</div>
+<div class="row mt-5 ms-0 me-0">
+    <div class="card mb-3 col-6">
+        <div class="card-body">
+            <p class="align-items-center">
+                Владелец: {{ object.user }}
+            </p>
+            <p>
+                Дата первой рассылки: {{ object.first_mall }}
+            </p>
+            <p>
+                Период рассылки: {{ object.get_regularity_display }}
+            </p>
+            <p>
+                Статус:
+                {% if object.is_active %}
+                {{ object.get_status_display }}
+                {% else %}
+                Отключена менеджером
+                {% endif %}
+            </p>
+            <div class="row mb-3">
+                <div class="col-2">
+                    Клиенты:
+                </div>
+                <div class="col">
+                    {% for client in mailing.clients.all %}
+                    <div class="row">
+                        <p class="mb-0 col-4">{{ client }}</p>
+                        <p class="mb-0 col">{{ client.email }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <p>
+                Сообщение:
+            </p>
+            <div class="row ms-0 me-0">
+                <div class="card mb-3">
+                    <div class="card-body fs-5">
+                        <h3 class="text-center">
+                            {{ object.message.name }}
+                        </h3>
+                        <p>
+                            {{ object.message.text }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% if perms.main.can_disable_mailings %}
+                {% if object.is_active %}
+                <div class="col-4">
+                    <a href="{% url 'main:disable_mailing' object.pk %}" type="button" class="btn btn-secondary w-100">
+                        Отключить рассылку
+                    </a>
+                </div>
+                {% else %}
+                <div class="col-4">
+                    <a href="{% url 'main:disable_mailing' object.pk %}" type="button" class="btn btn-secondary w-100">
+                        Возобновить рассылку
+                    </a>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

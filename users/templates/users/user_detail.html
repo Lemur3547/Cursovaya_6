@@ -1,0 +1,131 @@
+{% extends 'main/base.html' %}
+{% block menu %}
+{% include 'main/includes/inc_manager_menu.html' %}
+{% endblock %}
+{% block content %}
+<div class="row mt-5 ms-0 me-0 align-items-center">
+    <div class="col-5">
+        <h1>
+            Информация о пользователе
+        </h1>
+    </div>
+</div>
+<div class="row mt-5 ms-0 me-0">
+    <div class="col-6 ps-0">
+        <div class="card mb-3">
+            <div class="card-body fs-5">
+                <p>
+                    Имя:
+                    {% if viewable_user.username %}
+                    {{ viewable_user.username }}
+                    {% else %}
+                    Не указано
+                    {% endif %}
+                </p>
+                <p>
+                    Email: {{ viewable_user.email }}
+                </p>
+                <p>
+                    Статус:
+                    {% if viewable_user.is_active %}
+                    Активный
+                    {% else %}
+                    Не активный
+                    {% endif %}
+                </p>
+                <p>
+                    Последний вход :
+                    {% if viewable_user.last_login %}
+                    {{ viewable_user.last_login }}
+                    {% else %}
+                    Нет
+                    {% endif %}
+                </p>
+                <p>
+                    Дата регистрации : {{ viewable_user.date_joined }}
+                </p>
+                <div class="row">
+                {% if perms.users.can_block_users %}
+                {% if viewable_user.is_active %}
+                <div class="col-5">
+                    <a href="{% url 'main:block_user' viewable_user.pk %}" type="button" class="btn btn-secondary w-100">
+                        Заблокировать пользователя
+                    </a>
+                </div>
+                {% else %}
+                <div class="col-5">
+                    <a href="{% url 'main:block_user' viewable_user.pk %}" type="button" class="btn btn-secondary w-100">
+                        Разблокировать пользователя
+                    </a>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 pe-0">
+        <div class="card mb-3">
+            <div class="card-body">
+                <p class="text-center fs-4">
+                    Рассылки пользователя
+                </p>
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        Имя
+                    </div>
+                    <div class="col-4">
+                        Период
+                    </div>
+                    <div class="col-4 text-center">
+                        Статус
+                    </div>
+                </div>
+                <hr>
+                {% for mailing in viewable_user.mailing_set.all %}
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        {% if mailing.name %}
+                        {{ mailing.name }}
+                        {% else %}
+                        Рассылка №{{ mailing.pk }}
+                        {% endif %}
+                    </div>
+                    <div class="col-4">
+                        {{ mailing.get_regularity_display }}
+                    </div>
+                    <div class="col-4">
+                        {% if mailing.is_active %}
+                        {% if mailing.status == 'created' %}
+                        <div class="card bg-primary text-center p-2" style="color: white">
+                            Создана
+                        </div>
+                        {% elif mailing.status == 'active' %}
+                        <div class="card bg-success text-center p-2" style="color: white">
+                            Активна
+                        </div>
+                        {% elif mailing.status == 'completed' %}
+                        <div class="card bg-danger text-center p-2" style="color: white">
+                            Завершена
+                        </div>
+                        {% else %}
+                        <div class="card bg-warning text-center p-2" style="color: white">
+                            Ошибка статуса
+                        </div>
+                        {% endif %}
+                        {% else %}
+                        <div class="card bg-secondary text-center p-2" style="color: white">
+                            Отключена
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if not forloop.last %}
+                <hr>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'main/base.html' %}
+{% block menu %}
+{% include 'main/includes/inc_manager_menu.html' %}
+{% endblock %}
+{% block content %}
+{% load my_tags %}
+<div class="row mt-5 ms-0 me-0">
+    <div class="col-6">
+        <h1>
+            Рассылки пользователей
+        </h1>
+    </div>
+</div>
+<div class="row mt-5 ms-0 me-0">
+    <div class="card mb-3">
+        <div class="card-body p-0">
+            <div class="row">
+                <div class="text-decoration-none text-reset p-3">
+                    <div class="row align-items-center">
+                        <div class="col-3">
+                            Имя
+                        </div>
+                        <div class="col-3">
+                            Пользователь
+                        </div>
+                        <div class="col-2">
+                            Период рассылки
+                        </div>
+                        <div class="col-2">
+                            Дата первой рассылки
+                        </div>
+                        <div class="col-2 text-center">
+                            Статус
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for mail in object_list %}
+    <div class="card mb-3">
+        <div class="card-body p-0">
+            <div class="row">
+                <a href="{% url 'main:manager_view_mailing' mail.pk %}" class="text-decoration-none text-reset p-3">
+                    <div class="row align-items-center">
+                        <div class="col-3">
+                            <p class="mb-0 fw-bold lh-sm">
+                                {% if mail.name %}
+                                {{ mail.name }}
+                                {% else %}
+                                Рассылка №{{ mail.pk }}
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-3">
+                            {% if mail.user.avatar %}
+                            <img src="{{ mail.user.avatar|media_filter }}" class="rounded-circle me-2"
+                                 style="height: 30px; width: 30px; object-fit: cover">
+                            {% else %}
+                            <img src="/media/no_profile.png" class="rounded-circle me-2"
+                                 style="height: 30px; width: 30px; object-fit: cover">
+                            {% endif %}
+                            {{ mail.user }}
+                        </div>
+                        <div class="col-2">
+                            {{ mail.get_regularity_display }}
+                        </div>
+                        <div class="col-2">
+                            {{ mail.first_mall }}
+                        </div>
+                        <div class="col-2">
+                            {% if mail.is_active %}
+                            {% if mail.status == 'created' %}
+                            <div class="card bg-primary text-center p-2" style="color: white">
+                                Создана
+                            </div>
+                            {% elif mail.status == 'active' %}
+                            <div class="card bg-success text-center p-2" style="color: white">
+                                Активна
+                            </div>
+                            {% elif mail.status == 'completed' %}
+                            <div class="card bg-danger text-center p-2" style="color: white">
+                                Завершена
+                            </div>
+                            {% else %}
+                            <div class="card bg-warning text-center p-2" style="color: white">
+                                Ошибка статуса
+                            </div>
+                            {% endif %}
+                            {% else %}
+                            <div class="card bg-secondary text-center p-2" style="color: white">
+                                Отключена менеджером
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'main/base.html' %}
+{% block menu %}
+{% include 'main/includes/inc_left_menu.html' %}
+{% endblock %}
+{% block content %}
+<div class="row mt-5 ms-0 me-0">
+    <div class="col-6">
+        <h1>
+            Отчеты по рассылкам
+        </h1>
+    </div>
+</div>
+<div class="row mt-5 ms-0 me-0">
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="text-decoration-none text-reset">
+                    <div class="row align-items-center">
+                        <div class="col-3">
+                            Имя
+                        </div>
+                        <div class="col-3">
+                            Дата рассылки
+                        </div>
+                        <div class="col-3 text-center">
+                            Статус
+                        </div>
+                        <div class="col-3 text-center">
+                            Ответ сервера
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for maillog in object_list %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-3">
+                    <p class="mb-0 fw-bold">
+                        {% if maillog.mailing.name %}
+                        {{ maillog.mailing.name }}
+                        {% else %}
+                        Рассылка №{{ maillog.mailing.pk }}
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-3">
+                    {{ maillog.mailing_time }}
+                </div>
+                <div class="col-3">
+                    {% if maillog.status %}
+                    <div class="card bg-success text-center p-2" style="color: white">Успешно</div>
+                    {% else %}
+                    <div class="card bg-danger text-center p-2" style="color: white">Ошибка</div>
+                    {% endif %}
+                </div>
+                <div class="col-3 text-center">
+                    {% if maillog.response %}
+                    {{ maillog.response }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

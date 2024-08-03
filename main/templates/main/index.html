@@ -1,0 +1,96 @@
+{% extends 'main/base2.html' %}
+{% block content %}
+{% load my_tags %}
+<h1 class="text-center mt-4 mb-5">
+    Главная страница
+</h1>
+<div class="row mb-3">
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body text-center" style="height: 200px">
+                <p class="fs-1 m-0">
+                    {{ mailings_count }} рассылок
+                </p>
+                <p class="fs-3 m-0">
+                    было создано с помощью нашего сайта
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body text-center" style="height: 200px">
+                <p class="fs-1 m-0">
+                    {{ active_mailings }} рассылок
+                </p>
+                <p class="fs-3 m-0">
+                    активны в данный момент
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body text-center" style="height: 200px">
+                <p class="fs-1 m-0">
+                    {{ clients }} клиентов
+                </p>
+                <p class="fs-3 m-0">
+                    получают наши рассылки
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-5 justify-content-center">
+    <a href="{% url 'main:mailings' %}"
+       class="btn btn-primary d-flex align-items-center justify-content-center col-2">
+        <p class="m-0 me-3 mb-1 fs-5">
+            Начать работу
+        </p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+             class="bi bi-arrow-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+        </svg>
+    </a>
+</div>
+<h1 class="text-center mb-5">
+    Наш блог
+</h1>
+<div class="row">
+    {% for post in blog %}
+    <div class="col-3">
+        <div class="card mx-auto mb-3">
+            <a href="{% url 'blog:post' post.pk %}" class="text-decoration-none text-reset">
+                {% if post.image %}
+                <img src="{{ post.image|media_filter }}"
+                     class="card-img-top">
+                {% endif %}
+                <div class="card-body">
+                    <h4 class="card-title">{{ post.name }}</h4>
+                    <p>{{ post.body|truncatechars:100 }}</p>
+                    <p class="text-end">{{ post.views_count }} просмотров.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="col-3">
+        <div class="card mx-auto mb-3">
+            <a href="{% url 'blog:index' %}" class="text-decoration-none text-reset">
+                <div class="card-body text-center my-5">
+                    <h4>
+                        Другие посты
+                    </h4>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                         class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+                    </svg>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
