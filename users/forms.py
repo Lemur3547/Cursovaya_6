@@ -6,6 +6,7 @@ from users.models import User
 
 
 class StyleFormMixin:
+    """Миксин для стилизации форм"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
@@ -16,6 +17,7 @@ class StyleFormMixin:
 
 
 class UserRegisterForm(StyleFormMixin, UserCreationForm):
+    """Форма для регистрации пользователя"""
     class Meta:
         model = User
         fields = ('email', 'password1', 'password2')
@@ -28,6 +30,7 @@ class UserRegisterForm(StyleFormMixin, UserCreationForm):
 
 
 class UserProfileForm(StyleFormMixin, UserChangeForm):
+    """Модель для настройки профиля пользователя"""
     class Meta:
         model = User
         fields = ('username', 'email', 'avatar',)

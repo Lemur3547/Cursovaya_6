@@ -12,6 +12,7 @@ from users.models import User
 
 
 class MainPage(TemplateView):
+    """Контроллер для главной страницы"""
     def get(self, request, *args, **kwargs):
         context = {
             'mailings_count': Mailing.objects.all().count(),
@@ -23,20 +24,24 @@ class MainPage(TemplateView):
 
 
 class ClientListView(LoginRequiredMixin, ListView):
+    """Контроллер для страницы со списком клиентов"""
     model = Client
 
     def get_queryset(self, *args, **kwargs):
+        # Получение списка клиентов принадлежащих текущему пользователю
         queryset = super().get_queryset(*args, **kwargs)
         queryset = queryset.filter(user=self.request.user)
         return queryset
 
 
 class ClientCreateView(LoginRequiredMixin, CreateView):
+    """Контроллер для создания клиента"""
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('main:clients')
 
     def form_valid(self, form):
+        # Привязка текущего пользователя к создаваемому клиенту
         client = form.save()
         client.user = self.request.user
         client.save()
@@ -44,11 +49,13 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
 
 
 class ClientUpdateView(LoginRequiredMixin, UpdateView):
+    """Контроллер для изменения клиента"""
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('main:clients')
 
     def get_form_class(self):
+        # Ограничение доступа для других пользователей
         user = self.request.user
         if user == self.object.user:
             return ClientForm
@@ -56,9 +63,11 @@ class ClientUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class ClientsDetailView(LoginRequiredMixin, DetailView):
+    """Контроллер для просмотра клиента"""
     model = Client
 
     def get_object(self, queryset=None):
+        # Ограничение доступа для других пользователей
         self.object = super().get_object(queryset)
         user = self.request.user
         if user == self.object.user:
@@ -67,10 +76,12 @@ class ClientsDetailView(LoginRequiredMixin, DetailView):
 
 
 class ClientsDeleteView(LoginRequiredMixin, DeleteView):
+    """Контроллер для удаления клиента"""
     model = Client
     success_url = reverse_lazy('main:clients')
 
     def get_object(self, queryset=None):
+        # Ограничение доступа для других пользователей
         self.object = super().get_object(queryset)
         user = self.request.user
         if user == self.object.user:
@@ -79,20 +90,24 @@ class ClientsDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class MessageListView(LoginRequiredMixin, ListView):
+    """Контроллер для страницы со списком писем"""
     model = Message
 
     def get_queryset(self, *args, **kwargs):
+        # Получение списка писем принадлежащих текущему пользователю
         queryset = super().get_queryset(*args, **kwargs)
         queryset = queryset.filter(user=self.request.user)
         return queryset
 
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
+    """Контроллер для создания письма"""
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('main:messages')
 
     def form_valid(self, form):
+        # Привязка текущего пользователя к создаваемому письму
         message = form.save()
         message.user = self.request.user
         message.save()
@@ -100,11 +115,13 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
 
 
 class MessageUpdateView(LoginRequiredMixin, UpdateView):
+    """Контроллер для изменения письма"""
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('main:messages')
 
     def get_form_class(self):
+        # Ограничение доступа для других пользователей
         user = self.request.user
         if user == self.object.user:
             return MessageForm
@@ -112,9 +129,11 @@ class MessageUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class MessageDetailView(LoginRequiredMixin, DetailView):
+    """Контроллер для просмотра письма"""
     model = Message
 
     def get_object(self, queryset=None):
+        # Ограничение доступа для других пользователей
         self.object = super().get_object(queryset)
         user = self.request.user
         if user == self.object.user:
@@ -123,10 +142,12 @@ class MessageDetailView(LoginRequiredMixin, DetailView):
 
 
 class MessageDeleteView(LoginRequiredMixin, DeleteView):
+    """Контроллер для удаления письма"""
     model = Message
     success_url = reverse_lazy('main:messages')
 
     def get_object(self, queryset=None):
+        # Ограничение доступа для других пользователей
         self.object = super().get_object(queryset)
         user = self.request.user
         if user == self.object.user:
@@ -135,20 +156,25 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class MailingListView(LoginRequiredMixin, ListView):
+    """Контроллер для страницы со списком рассылок"""
     model = Mailing
 
     def get_queryset(self, *args, **kwargs):
+        # Получение списка рассылок принадлежащих текущему пользователю
         queryset = super().get_queryset(*args, **kwargs)
         queryset = queryset.filter(user=self.request.user)
         return queryset
 
 
 class MailingCreateView(LoginRequiredMixin, CreateView):
+    """Контроллер для создания рассылки"""
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy('main:mailings')
 
     def form_valid(self, form):
+        # Установление статуса рассылки на "создана"
+        # Привязка текущего пользователя к создаваемой рассылке
         mailing = form.save()
         if form.is_valid():
             mailing.status = 'created'
@@ -164,17 +190,20 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
 
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
+    """Контроллер для изменения рассылки"""
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy('main:mailings')
 
     def get_form_class(self):
+        # Ограничение доступа для других пользователей
         user = self.request.user
         if user == self.object.user:
             return MailingForm
         raise PermissionDenied
 
     def get_object(self, queryset=None):
+        # Ограничение доступа для других пользователей
         self.object = super().get_object(queryset)
         user = self.request.user
         if user == self.object.user:
@@ -188,9 +217,11 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class MailingDetailView(LoginRequiredMixin, DetailView):
+    """Контроллер для просмотра рассылки"""
     model = Mailing
 
     def get_object(self, queryset=None):
+        # Ограничение доступа для других пользователей
         self.object = super().get_object(queryset)
         user = self.request.user
         if user == self.object.user:
@@ -201,6 +232,7 @@ class MailingDetailView(LoginRequiredMixin, DetailView):
 
 @login_required
 def mailing_set_status(request, pk):
+    """Контроллер для завершения и возобновления рассылки"""
     mailing = get_object_or_404(Mailing, pk=pk)
     if mailing.status == 'active':
         mailing.status = 'completed'
@@ -212,6 +244,7 @@ def mailing_set_status(request, pk):
 
 @login_required
 def disable_mailing(request, pk):
+    """Контроллер для отключения рассылки менеджером"""
     mailing = get_object_or_404(Mailing, pk=pk)
     if mailing.is_active:
         mailing.is_active = False
@@ -222,10 +255,12 @@ def disable_mailing(request, pk):
 
 
 class MailingDeleteView(LoginRequiredMixin, DeleteView):
+    """Контроллер для удаления рассылки"""
     model = Mailing
     success_url = reverse_lazy('main:mailings')
 
     def get_object(self, queryset=None):
+        # Ограничение доступа для других пользователей
         self.object = super().get_object(queryset)
         user = self.request.user
         if user == self.object.user:
@@ -234,37 +269,44 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class MailingLogListView(LoginRequiredMixin, ListView):
+    """Контроллер для страницы со списком отчетов по рассылкам"""
     model = MailingLog
     ordering = '-mailing_time'
 
     def get_queryset(self, *args, **kwargs):
+        # Получение списка отчетов принадлежащих текущему пользователю
         queryset = super().get_queryset(*args, **kwargs)
         queryset = queryset.filter(user=self.request.user)
         return queryset
 
 
 class ManagerMailingListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    """Контроллер для страницы со списком рассылок для менеджера"""
     model = Mailing
     template_name = 'main/manager_mailing_list.html'
     permission_required = 'main.view_mailing'
 
 
 class ManagerMailingDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    """Контроллер для просмотра рассылки для менеджера"""
     model = Mailing
     template_name = 'main/manager_mailing_detail.html'
     permission_required = 'main.view_mailing'
 
 
 class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    """Контроллер для страницы со списком пользователей"""
     model = User
     permission_required = 'users.view_user'
 
 
 class UserDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    """Контроллер для просмотра пользователя"""
     model = User
     permission_required = 'users.view_user'
 
     def get_context_data(self, **kwargs):
+        # Получение данных о пользователе
         context_data = super().get_context_data(**kwargs)
         context_data['user'] = self.request.user
         context_data['viewable_user'] = User.objects.get(pk=self.kwargs['pk'])

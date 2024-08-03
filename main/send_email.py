@@ -8,14 +8,9 @@ from config import settings
 from main.models import Mailing, MailingLog
 
 
-def write_to_log(something):
-    with open('/home/emik/PycharmProjects/Cursovaya_6/test.txt', 'a') as file:
-        file.write(f'{something}\n')
-
-
 def update_mailing_status(mailing, current_datetime_round):
+    """Попытка рассылки сообщения"""
     try:
-        write_to_log('попытка отправки')
         send_mail(
             subject=mailing.message.name,
             message=mailing.message.text,
@@ -25,12 +20,11 @@ def update_mailing_status(mailing, current_datetime_round):
         )
         MailingLog.objects.create(mailing_time=current_datetime_round, status=True, response=None, mailing=mailing,
                                   user=mailing.user)
-        write_to_log('отправлено успешно')
     except smtplib.SMTPException as e:
         MailingLog.objects.create(mailing_time=current_datetime_round, status=False, response=e, mailing=mailing,
                                   user=mailing.user)
-        write_to_log('возникла ошибка')
 
+    # Обновление времени отправки последней рассылки и назначение времени следующей
     mailing.last_mall = current_datetime_round
     if mailing.regularity == 'day':
         mailing.next_mail = current_datetime_round + datetime.timedelta(days=1)
@@ -44,16 +38,14 @@ def update_mailing_status(mailing, current_datetime_round):
 
 
 def time_check():
+    """Получение списка рассылок, которые нужно разослать"""
     current_datetime = timezone.now()
     current_datetime_round = current_datetime.replace(second=0, microsecond=0)
-    write_to_log(current_datetime)
     new_mailings = Mailing.objects.filter(first_mall__lte=current_datetime, status='created', is_active=True)
-    write_to_log(new_mailings)
     for mailing in new_mailings:
         mailing.status = 'active'
         update_mailing_status(mailing, current_datetime_round)
 
     mailings = Mailing.objects.filter(next_mail__lte=current_datetime, status='active', is_active=True)
-    write_to_log(mailings)
     for mailing in mailings:
         update_mailing_status(mailing, current_datetime_round)

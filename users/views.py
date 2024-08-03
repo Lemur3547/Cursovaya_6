@@ -17,12 +17,14 @@ from users.models import User
 # Create your views here.
 
 class RegisterView(CreateView):
+    """Контроллер для страницы регистрации"""
     model = User
     form_class = UserRegisterForm
     template_name = 'users/register.html'
     success_url = reverse_lazy('users:email_confirm')
 
     def form_valid(self, form):
+        # После регистрации пользователь деактивируется и ему нв почту высылается токен для подтверждения почты
         user = form.save()
         user.is_active = False
         token = secrets.token_hex(16)
@@ -40,10 +42,12 @@ class RegisterView(CreateView):
 
 
 def email_verification_message(request):
+    """Сообщение о необходимости подтвердить почту"""
     return render(request, 'users/email_verification_message.html')
 
 
 def email_verification_token(request, token):
+    """Подтверждение почты, активация аккаунта и вход"""
     user = get_object_or_404(User, token=token)
     user.is_active = True
     user.save()
@@ -53,6 +57,7 @@ def email_verification_token(request, token):
 
 @login_required
 def block_user(request, pk):
+    """Блокировка пользователя менеджером"""
     user = get_object_or_404(User, pk=pk)
     if user.is_active:
         user.is_active = False
@@ -63,10 +68,13 @@ def block_user(request, pk):
 
 
 class ResetPasswordView(TemplateView):
+    """Контроллер для восстановления пароля"""
     def get(self, request):
+        # Получение страницы для сброса пароля
         return render(request, 'users/reset_password.html')
 
     def post(self, request, *args, **kwargs):
+        # генерация нового пароля и послание письма с ним на указанный адрес почты
         if request.method == 'POST':
             email = request.POST.get('email')
             alphabet = string.ascii_letters + string.digits
@@ -86,9 +94,11 @@ class ResetPasswordView(TemplateView):
 
 
 class ProfileView(UpdateView):
+    """Контроллер для изменения профиля пользователя"""
     model = User
     form_class = UserProfileForm
     success_url = reverse_lazy('main:mailings')
 
     def get_object(self, queryset=None):
+        # Получение текущего пользователя
         return self.request.user
