@@ -378,6 +378,42 @@
     }
   },
   {
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+      "name": "Can add Пост",
+      "content_type": 14,
+      "codename": "add_post"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+      "name": "Can change Пост",
+      "content_type": 14,
+      "codename": "change_post"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+      "name": "Can delete Пост",
+      "content_type": 14,
+      "codename": "delete_post"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+      "name": "Can view Пост",
+      "content_type": 14,
+      "codename": "view_post"
+    }
+  },
+  {
     "model": "auth.group",
     "pk": 1,
     "fields": {
@@ -387,6 +423,18 @@
         28,
         42,
         40
+      ]
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "Контент менеджер",
+      "permissions": [
+        43,
+        44,
+        45
       ]
     }
   }
